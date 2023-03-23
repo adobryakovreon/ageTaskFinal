@@ -19,8 +19,6 @@ const BIRTHDAY_FIELD_ID = 438899;
 app.post("/create", async (req, res) => {
 		const [{id}] = req.body.contacts.add;
 		const [{custom_fields}] = req.body.contacts.add;
-		console.log(custom_fields[1]);
-		console.log(custom_fields[0].values)
 		const birthday = new Date(utils.getFieldValue(custom_fields, BIRTHDAY_FIELD_ID));
 		const ageValue = utils.getAge(birthday);
 		const ageField = utils.makeField(AGE_FIELD_ID, ageValue);
