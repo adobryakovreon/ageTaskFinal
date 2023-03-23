@@ -45,7 +45,12 @@ const makeField = (field_id, value, enum_id) => {
 };
 
 const getAge = (birthday) => {
-	return birthday ? new Date(Date.now()).getFullYear() - Number(birthday.split(".")[2]): undefined;
+	if (!birthday) return undefined
+	const today = new Date();
+	const day = today.getDate() - birthday.getDate();
+	const month = day <0 ? today.getMonth() - birthday.getMonth() -1 : today.getMonth() - birthday.getMonth();
+	const year = month < 0 ? today.getFullYear() - birthday.getFullYear() -1 : today.getFullYear() - birthday.getFullYear(); 
+	return year < 0 ? 0 : year;
 };
 
 module.exports = {

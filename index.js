@@ -14,21 +14,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const AGE_FIELD_ID = 400839;
-const BIRTHDAY_FIELD_ID = 376795;
+const BIRTHDAY_FIELD_ID = 438899;
 
 app.post("/create", async (req, res) => {
-		const {id} = req.body.contacts.add[0].id;
-		const custom_fields = req.body.contacts.add[0].custom_fields;
-		const birthday = utils.getFieldValue(custom_fields, BIRTHDAY_FIELD_ID);
-		const age_value = utils.getAge(birthday);
-		const age_field = utils.makeField(AGE_FIELD_ID, age_value);
-		req.body = {
+		const [{id}] = req.body.contacts.add;
+		const [{custom_fields}] = req.body.contacts.add;
+		console.log(custom_fields[1]);
+		console.log(custom_fields[0].values)
+		const birthday = new Date(utils.getFieldValue(custom_fields, BIRTHDAY_FIELD_ID));
+		const ageValue = utils.getAge(birthday);
+		const ageField = utils.makeField(AGE_FIELD_ID, ageValue);
+		const updatedContact = {
 			id,
 			"custom_fields_values": [
-				age_field,
+				ageField,
 			]
 		};
-		await api.updateContact(req.body);
+		await api.updateContact(updatedContact);
 		res.send("OK");
 	});
 app.listen(config.PORT, () => logger.debug("Server started on ", config.PORT));
